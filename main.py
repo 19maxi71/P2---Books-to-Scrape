@@ -2,7 +2,6 @@ from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 import requests
 import csv
-import urllib3
 from urllib.parse import urljoin
 # import des librairies nécéssaires
 
@@ -21,6 +20,15 @@ soup= BeautifulSoup(page_de_site.text, "html.parser")
 # writer.writerow(["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"])
 
 
+def load_only_1_book_data(data):
+    # création d'une liste vide pour stocker les données
+    with open ('scrape_phase_1.csv', 'w') as csv_file:
+        titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
+        writer = csv.DictWriter(csv_file, fieldnames=titres)
+        writer.writeheader()
+        writer.writerow(data)
+
+    
 product_page_url = page_de_site.url
 # url de la page actuelle
 universal_product_code = soup.find("td").text
@@ -45,16 +53,30 @@ image_url_relative = soup.find('img')['src']
 image_url = urljoin(page_de_site.url, image_url_relative)
 # récupération de l'url de l'image ('img') ou ['src'] - attribut de la balise; urljoin - pour joindre l'url de la page et l'url de l'image
 
+data = {
+    "product_page_url": product_page_url,
+    "universal_product_code": universal_product_code,
+    "title": title,
+    "price_including_tax": price_including_tax,
+    "price_excluding_tax": price_excluding_tax,
+    "number_available": number_available,
+    "product_description": product_description,
+    "category": category,
+    "review_rating": review_rating,
+    "image_url": image_url
+}
+# fo faire en dictionnaire et pas en liste pour pouvoir utiliser la fonction writerow!!!!
 
 
 print(product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url)
 
-# def load(data)
-with open('scrape_phase_1.csv', 'w') as csv_file:
-    writer= csv.writer(csv_file, delimiter=',')
-    writer.writerow(["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"])
-    for (product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url) in zip(product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url):
-        writer.writerow([product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url])
+load_only_1_book_data(data)  # lancer la fonction pour enregistrer les données dans le fichier csv
+
+# with open('scrape_phase_1.csv', 'w') as csv_file:
+#     writer= csv.writer(csv_file, delimiter=',')
+#     writer.writerow(["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"])
+#     for (product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url) in zip(product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url):
+#         writer.writerow([product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url])
     
 # writer.writerow([product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url])
 # file.close()
