@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import requests
 import csv
 from urllib.parse import urljoin
+import pandas as pd
+
 # import des librairies nécéssaires
 
 
@@ -80,3 +82,23 @@ load_only_1_book_data(data)  # lancer la fonction pour enregistrer les données 
     
 # writer.writerow([product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url])
 # file.close()
+
+
+# trouver tous les liens des catégories principales
+page_de_site_home= requests.get("https://books.toscrape.com")
+# récupération de la page HOME
+soup= BeautifulSoup(page_de_site_home.text, "html.parser")
+
+
+# ttes_categories = soup.find('div', class_="side_categories").find_all('a')
+# # Extraire les liens des catégories principales
+# links = [ttes_categories['href'] for categorie in ttes_categories]
+# print(links)
+
+ttes_categories = soup.find('ul', class_="nav nav-list")
+if ttes_categories:
+    links = ttes_categories.find_all('a')
+    links_cat_urls = [urljoin(page_de_site_home.url, link['href']) for link in links]
+    print(links_cat_urls)
+else:
+    print("No links found.")
