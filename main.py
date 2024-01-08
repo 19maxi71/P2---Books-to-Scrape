@@ -4,6 +4,9 @@ import requests
 import csv
 from urllib.parse import urljoin
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 # import des librairies nécéssaires
 
@@ -84,21 +87,64 @@ load_only_1_book_data(data)  # lancer la fonction pour enregistrer les données 
 # file.close()
 
 
-# trouver tous les liens des catégories principales
-page_de_site_home= requests.get("https://books.toscrape.com")
-# récupération de la page HOME
-soup= BeautifulSoup(page_de_site_home.text, "html.parser")
+
+# Choisissez n'importe quelle catégorie sur le site de Books to Scrape. Écrivez un
+# script Python qui consulte la page de la catégorie choisie, et extrait l'URL de la
+# page Produit de chaque livre appartenant à cette catégorie.
+# Combinez cela avec le travail que vous avez déjà effectué dans la phase 1 afin
+# d'extraire les données produit de tous les livres de la catégorie choisie, puis écrivez
+# les données dans un seul fichier CSV.
+# Remarque : certaines pages de catégorie comptent plus de 20 livres, qui sont
+# donc répartis sur différentes pages (« pagination »). Votre application doit être
+# capable de parcourir automatiquement les multiples pages si présentes
+
+def scrape_category_links(category_url):
+    all_links_book_urls = []
+    page = requests.get(category_url)
+    soup = BeautifulSoup(page.text, "html.parser")
+    page_number = soup.find_all('li', class_='current')
+    x = int(page_number[0].text.split()[-1])
+    for i in range(1, x+1):
+        category_url = f"https://books.toscrape.com/catalogue/category/books/mystery_3/page-{i}.html" # cycle pour parcourir les pages de la catégorie
+        page = requests.get(category_url)
+        soup = BeautifulSoup(page.text, "html.parser")
+        links = soup.find_all('h3')  # cherche les links dans les balises h3
+        links_book_urls = [urljoin(category_url, link.find('a')['href']) for link in links]
+        all_links_book_urls.extend(links_book_urls)
+    return all_links_book_urls
+    # df= pd.DataFrame(links_book_urls)
+    # df.to_csv("links_book_urls.csv", index=False)
+category_url = "https://books.toscrape.com/catalogue/category/books/mystery_3/page-1.html"
+result = scrape_category_links(category_url)
+print(result)
 
 
-# ttes_categories = soup.find('div', class_="side_categories").find_all('a')
-# # Extraire les liens des catégories principales
-# links = [ttes_categories['href'] for categorie in ttes_categories]
-# print(links)
 
-ttes_categories = soup.find('ul', class_="nav nav-list")
-if ttes_categories:
-    links = ttes_categories.find_all('a')
-    links_cat_urls = [urljoin(page_de_site_home.url, link['href']) for link in links]
-    print(links_cat_urls)
-else:
-    print("No links found.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+# # trouver tous les liens des catégories principales
+# page_de_site_home= requests.get("https://books.toscrape.com")
+# # récupération de la page HOME
+# soup= BeautifulSoup(page_de_site_home.text, "html.parser")
+# # # Extraire les liens des catégories principales
+# ttes_categories = soup.find('ul', class_="nav nav-list")
+# if ttes_categories:
+#     links = ttes_categories.find_all('a')
+#     links_cat_urls = [urljoin(page_de_site_home.url, link['href']) for link in links]
+#     print(links_cat_urls)
+# else:
+#     print("trouve rien!")
+
+# utilisation de pandas
+    
