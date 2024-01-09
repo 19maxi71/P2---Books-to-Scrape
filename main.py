@@ -11,13 +11,6 @@ from urllib.parse import urljoin
 # import des librairies nécéssaires
 
 
-
-
-page_de_site= requests.get("https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html")
-# récupération de la page web et stockage dans une variable
-soup= BeautifulSoup(page_de_site.text, "html.parser")
-# utilisation de BeautifulSoup pour parser la page web
-
 # file = open("scrape_phase_1.csv", "w")
 # # ouverture du fichier csv pour enregistrement des données
 # writer = csv.writer(file)
@@ -25,57 +18,61 @@ soup= BeautifulSoup(page_de_site.text, "html.parser")
 # writer.writerow(["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"])
 
 
-def load_only_1_book_data(data):
-    # création d'une liste vide pour stocker les données
-    with open ('scrape_phase_1.csv', 'w') as csv_file:
-        titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
-        writer = csv.DictWriter(csv_file, fieldnames=titres)
-        writer.writeheader()
-        writer.writerow(data)
+# def load_only_1_book_data(data):
+#     # création d'une liste vide pour stocker les données
+#     with open ('C:\\Users\\maxya\\OneDrive\\Документи\\GitHub\\p2-books_to_scrape\\scrape_phase_1.csv', 'w') as csv_file:
+#         titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
+#         writer = csv.DictWriter(csv_file, fieldnames=titres)
+#         writer.writeheader()
+#         writer.writerow(data)
 
+# page_de_site= requests.get("https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html")
+# # récupération de la page web et stockage dans une variable
+# soup= BeautifulSoup(page_de_site.text, "html.parser")
+# # utilisation de BeautifulSoup pour parser la page web
     
-product_page_url = page_de_site.url
-# url de la page actuelle
-universal_product_code = soup.find("td").text
-# récupération du code produit
-title = soup.find("h1").text
-# récupération du titre
-price_including_tax = soup.find(text='Price (incl. tax)').find_next('td').text.replace('Â', '')
-# price_including_tax = price_including_tax_A.replace('Â', '')
-# récupération du prix ttc sans le symbole Â
-price_excluding_tax = soup.find(text='Price (excl. tax)').find_next('td').text.replace('Â', '')
-# price_excluding_tax = price_excluding_tax_A.replace('Â', '')
-# récupération du prix ht sans le symbole Â
-number_available = soup.find(text='Availability').find_next('td').text
-# récupération du nombre d'articles disponibles
-product_description = soup.find(text='Product Description').find_next('p').text
-# récupération de la description du produit
-category = soup.find_all('a')[3].text
-# récupération de la catégorie du produit ou [3] numéro de link dans la liste des links de la page. Cela a été DURE!!!!!!
-review_rating = soup.find_all('p')[2]['class'][1]
-# récupération de la note. ou [2] numéro de paragraphe - 3 par. de la page. ['class'] - attribut de la balise - [1] numéro de la balise à choisir.
-image_url_relative = soup.find('img')['src']
-image_url = urljoin(page_de_site.url, image_url_relative)
-# récupération de l'url de l'image ('img') ou ['src'] - attribut de la balise; urljoin - pour joindre l'url de la page et l'url de l'image
+# product_page_url = page_de_site.url
+# # url de la page actuelle
+# universal_product_code = soup.find("td").text
+# # récupération du code produit
+# title = soup.find("h1").text
+# # récupération du titre
+# price_including_tax = soup.find(text='Price (incl. tax)').find_next('td').text.replace('Â', '')
+# # price_including_tax = price_including_tax_A.replace('Â', '')
+# # récupération du prix ttc sans le symbole Â
+# price_excluding_tax = soup.find(text='Price (excl. tax)').find_next('td').text.replace('Â', '')
+# # price_excluding_tax = price_excluding_tax_A.replace('Â', '')
+# # récupération du prix ht sans le symbole Â
+# number_available = soup.find(text='Availability').find_next('td').text
+# # récupération du nombre d'articles disponibles
+# product_description = soup.find(text='Product Description').find_next('p').text
+# # récupération de la description du produit
+# category = soup.find_all('a')[3].text
+# # récupération de la catégorie du produit ou [3] numéro de link dans la liste des links de la page. Cela a été DURE!!!!!!
+# review_rating = soup.find_all('p')[2]['class'][1]
+# # récupération de la note. ou [2] numéro de paragraphe - 3 par. de la page. ['class'] - attribut de la balise - [1] numéro de la balise à choisir.
+# image_url_relative = soup.find('img')['src']
+# image_url = urljoin(page_de_site.url, image_url_relative)
+# # récupération de l'url de l'image ('img') ou ['src'] - attribut de la balise; urljoin - pour joindre l'url de la page et l'url de l'image
 
-data = {
-    "product_page_url": product_page_url,
-    "universal_product_code": universal_product_code,
-    "title": title,
-    "price_including_tax": price_including_tax,
-    "price_excluding_tax": price_excluding_tax,
-    "number_available": number_available,
-    "product_description": product_description,
-    "category": category,
-    "review_rating": review_rating,
-    "image_url": image_url
-}
-# fo faire en dictionnaire et pas en liste pour pouvoir utiliser la fonction writerow!!!!
+# data = {
+#     "product_page_url": product_page_url,
+#     "universal_product_code": universal_product_code,
+#     "title": title,
+#     "price_including_tax": price_including_tax,
+#     "price_excluding_tax": price_excluding_tax,
+#     "number_available": number_available,
+#     "product_description": product_description,
+#     "category": category,
+#     "review_rating": review_rating,
+#     "image_url": image_url
+# }
+# # fo faire en dictionnaire et pas en liste pour pouvoir utiliser la fonction writerow!!!!
 
 
-print(product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url)
+# print(product_page_url, universal_product_code, title, price_including_tax, price_excluding_tax, number_available, product_description, category, review_rating, image_url)
 
-load_only_1_book_data(data)  # lancer la fonction pour enregistrer les données dans le fichier csv
+# load_only_1_book_data(data)  # lancer la fonction pour enregistrer les données dans le fichier csv
 
 # with open('scrape_phase_1.csv', 'w') as csv_file:
 #     writer= csv.writer(csv_file, delimiter=',')
@@ -112,15 +109,103 @@ def scrape_category_links(category_url):
         links_book_urls = [urljoin(category_url, link.find('a')['href']) for link in links]
         all_links_book_urls.extend(links_book_urls)
     return all_links_book_urls
-    # df= pd.DataFrame(links_book_urls)
-    # df.to_csv("links_book_urls.csv", index=False)
 category_url = "https://books.toscrape.com/catalogue/category/books/mystery_3/page-1.html"
 result = scrape_category_links(category_url)
 print(result)
 
 
 
+for link in result:
+    def load_book_data(link):
+        page_de_site = requests.get(link)
+        soup = BeautifulSoup(page_de_site.text, "html.parser")
 
+        product_page_url = page_de_site.url
+        universal_product_code = soup.find("td").string
+        title = soup.find("h1").string
+        price_including_tax = soup.find(string='Price (incl. tax)').find_next('td').string.replace('Â', '')
+        price_excluding_tax = soup.find(string='Price (excl. tax)').find_next('td').string.replace('Â', '')
+        number_available = soup.find(string='Availability').find_next('td').string
+        product_description = soup.find(string='Product Description').find_next('p').string
+        category = soup.find_all('a')[3].string
+        review_rating = soup.find_all('p')[2]['class'][1]
+        image_url_relative = soup.find('img')['src']
+        image_url = urljoin(page_de_site.url, image_url_relative)
+
+        # Return the extracted data as a dictionary or any other desired format
+        book_data = {
+            "product_page_url": product_page_url,
+            "universal_product_code": universal_product_code,
+            "title": title,
+            "price_including_tax": price_including_tax,
+            "price_excluding_tax": price_excluding_tax,
+            "number_available": number_available,
+            "product_description": product_description,
+            "category": category,
+            "review_rating": review_rating,
+            "image_url": image_url
+        }
+        return book_data
+result2 = load_book_data(link)
+print(result2) # Якогось Х.. пише тільки останню книжку зі всіх. Чо решту пропускає??!!!!!!
+
+titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
+df = pd.DataFrame(columns=titres)
+result2_df = pd.DataFrame([result2])  # Convert the dictionary to a DataFrame
+df = pd.concat([result2_df], ignore_index=True)
+
+df.to_csv("scrape_phase_2.csv", index=False)
+
+
+
+
+
+    # df= pd.DataFrame(links_book_urls)
+    # df.to_csv("links_book_urls.csv", index=False)
+
+# def load_each_book_data(data):
+#     with open('scrape_phase_1.csv', 'a', newline='', encoding='utf-8') as csv_file:
+#         titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
+#         writer = csv.DictWriter(csv_file, fieldnames=titres)
+#         writer.writeheader()
+#         writer.writerow(data)
+
+# def scrape_book_data(book_url):
+#     page_de_site = requests.get(book_url)
+#     soup = BeautifulSoup(page_de_site.text, "html.parser")
+#     product_page_url = page_de_site.url
+#     universal_product_code = soup.find("td").text
+#     title = soup.find("h1").text
+#     price_including_tax = soup.find(text='Price (incl. tax)').find_next('td').text.replace('Â', '')
+#     price_excluding_tax = soup.find(text='Price (excl. tax)').find_next('td').text.replace('Â', '')
+#     number_available = soup.find(text='Availability').find_next('td').text
+#     product_description = soup.find(text='Product Description').find_next('p').text
+#     category = soup.find_all('a')[3].text
+#     review_rating = soup.find_all('p')[2]['class'][1]
+#     image_url_relative = soup.find('img')['src']
+#     image_url = urljoin(page_de_site.url, image_url_relative)
+#     data = {
+#         "product_page_url": product_page_url,
+#         "universal_product_code": universal_product_code,
+#         "title": title,
+#         "price_including_tax": price_including_tax,
+#         "price_excluding_tax": price_excluding_tax,
+#         "number_available": number_available,
+#         "product_description": product_description,
+#         "category": category,
+#         "review_rating": review_rating,
+#         "image_url": image_url
+#     }
+#     return data
+
+# # URLs of books from the mystery category
+# category_url = "https://books.toscrape.com/catalogue/category/books/mystery_3/page-1.html"
+# result = scrape_category_links(category_url)
+
+# # Scrape and save data for each book
+# for book_url in result:
+#     data = scrape_book_data(book_url)
+#     load_only_1_book_data(data)
 
 
 
@@ -147,4 +232,19 @@ print(result)
 #     print("trouve rien!")
 
 # utilisation de pandas
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
