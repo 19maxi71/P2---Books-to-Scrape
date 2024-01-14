@@ -41,7 +41,7 @@ def scrape_category_links(category_url):
     return all_links_book_urls
 category_url = "https://books.toscrape.com/catalogue/category/books/mystery_3/page-1.html"
 result = scrape_category_links(category_url)
-print(result)
+# print(result)
 
 titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
 df = pd.DataFrame(columns=titres)
