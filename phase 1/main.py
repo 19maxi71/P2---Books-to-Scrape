@@ -12,7 +12,7 @@ from urllib.parse import urljoin
 
 
 def load_only_1_book_data(data):
-    with open (r'D:\All OpenClassRooms projects\P2 - Books to Scrape\P2 - phase 1\scrape_phase_1.csv', 'a', newline='') as csv_file:
+    with open (r'D:\All OpenClassRooms projects\P2 - Books to Scrape\P2---Books-to-Scrape\phase 1\scrape_phase_1.csv', 'a', newline='') as csv_file:
         titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
         writer = csv.DictWriter(csv_file, fieldnames=titres)
         # write header seulement si le fichier est vide, sinon il va écrire le header à chaque fois
