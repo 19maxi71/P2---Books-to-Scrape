@@ -76,7 +76,7 @@ def load_book_data(link):
         "review_rating": review_rating,
         "image_url": image_url
     }
-    return book_data 
+    return book_data
 
 for link in result:
     book_data = load_book_data(link)
