@@ -68,59 +68,57 @@ def scrape_category_links(category_url):
 
 links_cat_urls = get_cat_links() # récupère les liens des catégories
 
-all_book_urls = []  # Create a new list to store all book URLs
+all_book_urls = []  # créer une liste vide pour y mettre les liens des livres
 
 for category_url in links_cat_urls:  # Loop over all category URLs
     result = scrape_category_links(category_url)  # Get all book URLs in the category
     all_book_urls.extend(result)  # Add these URLs to the list of all book URLs
 
-print(all_book_urls)  # Print all book URLs from all categories
-# # 2ème partie du code pour scraper les données des livres
-# titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
-# df = pd.DataFrame(columns=titres) # créer un dataframe vide avec les titres des colonnes
+# print(all_book_urls)  # Print all book URLs from all categories
+# 2ème partie du code pour scraper les données des livres
+titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
+df = pd.DataFrame(columns=titres) # créer un dataframe vide avec les titres des colonnes
 
 
-# def load_book_data(link): # fonction pour scraper les données d'une livre
-#     page_de_site = requests.get(link) # récupère la page du livre dans le lien link qui est le résultat de la fonction scrape_category_links
-#     soup = BeautifulSoup(page_de_site.text, "html.parser")
+def load_book_data(link): # fonction pour scraper les données d'une livre
+    page_de_site = requests.get(link) # récupère la page du livre dans le lien link qui est le résultat de la fonction scrape_category_links
+    soup = BeautifulSoup(page_de_site.text, "html.parser")
 
-#     product_page_url = page_de_site.url
-#     universal_product_code = soup.find("td").string
-#     title = soup.find("h1").string
-#     price_including_tax = soup.find(string='Price (incl. tax)').find_next('td').string.replace('Â', '')
-#     price_excluding_tax = soup.find(string='Price (excl. tax)').find_next('td').string.replace('Â', '')
-#     number_available = soup.find(string='Availability').find_next('td').string
-#     product_description_element = soup.find(string='Product Description')
-#     if product_description_element is None:
-#         product_description = "Y'en a pas"
-#     else:
-#         product_description = product_description_element.find_next('p').string
-#     category = soup.find_all('a')[3].string
-#     review_rating = soup.find_all('p')[2]['class'][1]
-#     image_url_relative = soup.find('img')['src']
-#     image_url = urljoin(page_de_site.url, image_url_relative)
+    product_page_url = page_de_site.url
+    universal_product_code = soup.find("td").string
+    title = soup.find("h1").string
+    price_including_tax = soup.find(string='Price (incl. tax)').find_next('td').string.replace('Â', '')
+    price_excluding_tax = soup.find(string='Price (excl. tax)').find_next('td').string.replace('Â', '')
+    number_available = soup.find(string='Availability').find_next('td').string
+    product_description_element = soup.find(string='Product Description')
+    if product_description_element is None:
+        product_description = "Y'en a pas"
+    else:
+        product_description = product_description_element.find_next('p').string
+    category = soup.find_all('a')[3].string
+    review_rating = soup.find_all('p')[2]['class'][1]
+    image_url_relative = soup.find('img')['src']
+    image_url = urljoin(page_de_site.url, image_url_relative)
 
-#         # fo faire en dictionnaire et pas en liste pour pouvoir utiliser la fonction writerow!!!!
-#     book_data = {
-#         "product_page_url": product_page_url,
-#         "universal_product_code": universal_product_code,
-#         "title": title,
-#         "price_including_tax": price_including_tax,
-#         "price_excluding_tax": price_excluding_tax,
-#         "number_available": number_available,
-#         "product_description": product_description,
-#         "category": category,
-#         "review_rating": review_rating,
-#         "image_url": image_url
-#     }
-#     return book_data #
+        # fo faire en dictionnaire et pas en liste pour pouvoir utiliser la fonction writerow!!!!
+    book_data = {
+        "product_page_url": product_page_url,
+        "universal_product_code": universal_product_code,
+        "title": title,
+        "price_including_tax": price_including_tax,
+        "price_excluding_tax": price_excluding_tax,
+        "number_available": number_available,
+        "product_description": product_description,
+        "category": category,
+        "review_rating": review_rating,
+        "image_url": image_url
+    }
+    return book_data #
 
-# for category_url in links_cat_urls:
-#     result = scrape_category_links(category_url)
-#     for link in result:
-#         book_data = load_book_data(link)
-#         book_data_df = pd.DataFrame([book_data])  # convertir en df car append ne marche pas avec les dictionnaires
-#         df = pd.concat([df, book_data_df], ignore_index=True)  # concatène les df dans df
+for link in all_book_urls: # cycle pour scraper les données de tous les livres dans la liste all_book_urls
+    book_data = load_book_data(link)
+    book_data_df = pd.DataFrame([book_data])  # convertir en df car append ne marche pas avec les dictionnaires
+    df = pd.concat([df, book_data_df], ignore_index=True)  # concatène les df dans df
 
 
-# df.to_csv(r'D:\All OpenClassRooms projects\P2 - Books to Scrape\P2---Books-to-Scrape\phase 3\scrape_phase_3.csv', index=False)
+df.to_csv(r'D:\All OpenClassRooms projects\P2 - Books to Scrape\P2---Books-to-Scrape\phase 3\scrape_phase_3.csv', index=False)
