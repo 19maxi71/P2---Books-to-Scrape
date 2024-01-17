@@ -68,13 +68,9 @@ def scrape_category_links(category_url):
 
 links_cat_urls = get_cat_links() # récupère les liens des catégories
 
-all_book_urls = []  # créer une liste vide pour y mettre les liens des livres
+# all_book_urls = {}  # créer une liste vide pour y mettre les liens des livres
 
-for category_url in links_cat_urls:  # Loop over all category URLs
-    result = scrape_category_links(category_url)  # Get all book URLs in the category
-    all_book_urls.extend(result)  # Add these URLs to the list of all book URLs
 
-# print(all_book_urls)  # Print all book URLs from all categories
 # 2ème partie du code pour scraper les données des livres
 titres = ["product_page_url", "universal_product_code", "title", "price_including_tax", "price_excluding_tax", "number_available", "product_description", "category", "review_rating", "image_url"]
 df = pd.DataFrame(columns=titres) # créer un dataframe vide avec les titres des colonnes
@@ -115,10 +111,12 @@ def load_book_data(link): # fonction pour scraper les données d'une livre
     }
     return book_data #
 
-for link in all_book_urls: # cycle pour scraper les données de tous les livres dans la liste all_book_urls
-    book_data = load_book_data(link)
-    book_data_df = pd.DataFrame([book_data])  # convertir en df car append ne marche pas avec les dictionnaires
-    df = pd.concat([df, book_data_df], ignore_index=True)  # concatène les df dans df
-
-
-df.to_csv(r'D:\All OpenClassRooms projects\P2 - Books to Scrape\P2---Books-to-Scrape\phase 3\scrape_phase_3.csv', index=False)
+for category_url in links_cat_urls: # pour chaque url de catégorie dans la liste links_cat_urls (récupérée avec la fonction get_cat_links)
+    all_links_cat_urls = scrape_category_links(category_url)  # la fonction scrape_category_links retourne la liste des liens des livres de la catégorie
+    for link in all_links_cat_urls:
+        book_data = load_book_data(link)
+        book_data_df = pd.DataFrame([book_data]) # convertir en df car append ne marche pas avec les dictionnaires
+        df = pd.concat([df, book_data_df], ignore_index=True)  # concatène les df dans df
+    category_name = category_url.split('/')[-2] # pour rajouter le nom de la catégorie dans le nom du fichier .csv
+    df.to_csv(f'D:\\All OpenClassRooms projects\\P2 - Books to Scrape\\P2---Books-to-Scrape\\phase 3\\scrape_phase_3_{category_name}.csv', index=False)
+    df = pd.DataFrame(columns=titres) # quand la df est écrit dans le fichier .csv cela vide la df de nouveau pour la prochaine catégorie
