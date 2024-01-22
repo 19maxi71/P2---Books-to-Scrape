@@ -100,7 +100,7 @@ def load_book_data(link): # fonction pour scraper les données d'une livre
     }
     return book_data #
 
-chemin_dossier = input("Entrez le chemin du dossier où vous voulez enregistrer les fichiers .csv et les images:")
+chemin_dossier = input("Entrez le chemin du dossier où vous voulez enregistrer les fichiers .csv et les images:") # demande à l'utilisateur le chemin du dossier où il veut enregistrer les fichiers .csv et les images
 
 for category_url in links_cat_urls: # pour chaque url de catégorie dans la liste links_cat_urls (récupérée avec la fonction get_cat_links)
     all_links_cat_urls = scrape_category_links(category_url)  # la fonction scrape_category_links retourne la liste des liens des livres de la catégorie

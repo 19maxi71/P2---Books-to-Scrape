@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import pandas as pd
 from urllib.parse import urljoin
+import os
 # import des librairies nécéssaires
 
 
@@ -109,7 +110,9 @@ def load_book_data(link): # fonction pour scraper les données d'une livre
         "review_rating": review_rating,
         "image_url": image_url
     }
-    return book_data #
+    return book_data #  retourne le dictionnaire book_data
+
+chemin_dossier = input("Entrez le chemin du dossier où vous voulez enregistrer les fichiers .csv et les images:") # demande à l'utilisateur le chemin du dossier où il veut enregistrer les fichiers .csv et les images
 
 for category_url in links_cat_urls: # pour chaque url de catégorie dans la liste links_cat_urls (récupérée avec la fonction get_cat_links)
     all_links_cat_urls = scrape_category_links(category_url)  # la fonction scrape_category_links retourne la liste des liens des livres de la catégorie
@@ -118,5 +121,5 @@ for category_url in links_cat_urls: # pour chaque url de catégorie dans la list
         book_data_df = pd.DataFrame([book_data]) # convertir en df car append ne marche pas avec les dictionnaires
         df = pd.concat([df, book_data_df], ignore_index=True)  # concatène les df dans df
     category_name = category_url.split('/')[-2] # pour rajouter le nom de la catégorie dans le nom du fichier .csv
-    df.to_csv(f'D:\\All OpenClassRooms projects\\P2 - Books to Scrape\\P2---Books-to-Scrape\\phase 3\\scrape_phase_3_{category_name}.csv', index=False)
+    df.to_csv(os.path.join(chemin_dossier, f"scrape_phase_3_{category_name}.csv"), index=False) # écrit les fichiers .csv dans le dossier qu'on a saisie au début
     df = pd.DataFrame(columns=titres) # quand la df est écrit dans le fichier .csv cela vide la df de nouveau pour la prochaine catégorie
