@@ -44,7 +44,7 @@ def get_cat_links(): # fonction pour récupérer les liens des catégories
 
 
 
-def scrape_category_links(category_url):
+def scrape_category_links(category_url): # fonction pour récupérer les liens des livres de la catégorie
     all_links_book_urls = []
     url_de_base = category_url.split('/index.html')[0]
     page = requests.get(category_url)
@@ -94,7 +94,7 @@ def load_book_data(link): # fonction pour scraper les données d'une livre
     category = soup.find_all('a')[3].string
     review_rating = soup.find_all('p')[2]['class'][1]
     image_url_relative = soup.find('img')['src']
-    image_url = urljoin(page_de_site.url, image_url_relative)
+    image_url = urljoin(page_de_site.url, image_url_relative) #  VOIR COMMENT TELECHARGER LES IMAGES ICI!!!!
 
         # fo faire en dictionnaire et pas en liste pour pouvoir utiliser la fonction writerow!!!!
     book_data = {
