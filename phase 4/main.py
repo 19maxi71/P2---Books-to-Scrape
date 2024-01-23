@@ -113,10 +113,10 @@ for category_url in links_cat_urls: # pour chaque url de catégorie dans la list
             category_name = category_url.split('/')[-2]
             dossier_pour_images = os.path.join(chemin_dossier, f"images_{category_name}")
             os.makedirs(dossier_pour_images, exist_ok=True)  # cela crée le dossier pour les images si il n'existe pas déjà, sinon ne fait rien
-            filename = os.path.join(dossier_pour_images, f"{title}.jpg") # donne le nom du titre au fichier image
+            filename = os.path.join(dossier_pour_images, image_url.split('/')[-1])
             with open(filename, 'wb') as handler: # 'wb' - write binary - pour écrire les fichiers, fait partie de requests
                 handler.write(img_data) # écrit les fichiers images dans le dossier images
-    category_name = category_url.split('/')[-2] # pour rajouter le nom de la catégorie dans le nom du fichier .csv
+    category_name = category_url.split('/')[-2] # pour rajouter le nom de la catégorie dans le nom du ficD:\All OpenClassRooms projects\P2 - Books to Scrape\P2---Books-to-Scrape\phase 4hier .csv
     df.to_csv(os.path.join(chemin_dossier, f"scrape_phase_4_{category_name}.csv"), index=False) # écrit les fichiers .csv dans le dossier qu'on a saisie au début
     
-    df = pd.DataFrame(columns=titres) # quand la df est écrit dans le fichier .csv cela vide la df de nouveau pour la prochaine catégorie
+    df = pd.DataFrame(columns=titres) # quand la df est écrit dans le fichier .csv cela vide la df de nouveau pour la prochaine catégorieD:\All OpenClassRooms projects\P2 - Books to Scrape\P2---Books-to-Scrape\phase 4

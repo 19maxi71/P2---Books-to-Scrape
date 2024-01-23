@@ -20,19 +20,6 @@ import os
 url_home = "https://books.toscrape.com" # url du site à scraper 
 
 
-
-# def get_cat_names(): # fonction pour récupérer les noms des catégories
-#     page_de_site_home = requests.get(url_home)
-#     soup_home = BeautifulSoup(page_de_site_home.text, "html.parser")
-
-#     ttes_categories = soup_home.find('ul', class_="nav nav-list")
-#     links = ttes_categories.find_all('a')
-#     links_cat_urls = [urljoin(page_de_site_home.url, link['href']) for link in links]
-#     category_names = [url.split('/')[-2] for url in links_cat_urls]
-#     print(category_names)
-# get_cat_names()
-
-
 def get_cat_links(): # fonction pour récupérer les liens des catégories
     page_de_site_home = requests.get(url_home)
     soup_home = BeautifulSoup(page_de_site_home.text, "html.parser")
@@ -112,7 +99,7 @@ def load_book_data(link): # fonction pour scraper les données d'une livre
     }
     return book_data #  retourne le dictionnaire book_data
 
-chemin_dossier = input("Entrez le chemin du dossier où vous voulez enregistrer les fichiers .csv et les images:") # demande à l'utilisateur le chemin du dossier où il veut enregistrer les fichiers .csv et les images
+chemin_dossier = input("Entrez le chemin du dossier où vous voulez enregistrer les fichiers .csv") # demande à l'utilisateur le chemin du dossier où il veut enregistrer les fichiers .csv et les images
 
 for category_url in links_cat_urls: # pour chaque url de catégorie dans la liste links_cat_urls (récupérée avec la fonction get_cat_links)
     all_links_cat_urls = scrape_category_links(category_url)  # la fonction scrape_category_links retourne la liste des liens des livres de la catégorie

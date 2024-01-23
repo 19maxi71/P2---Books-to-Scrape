@@ -25,6 +25,9 @@ import pandas as pd
 # donc répartis sur différentes pages (« pagination »). Votre application doit être
 # capable de parcourir automatiquement les multiples pages si présentes
 
+
+chemin_dossier = input("Entrez le chemin du dossier où vous voulez enregistrer le fichier .csv") # demande à l'utilisateur le chemin du dossier où il veut enregistrer les fichiers .csv et les images
+
 def scrape_category_links(category_url):
     all_links_book_urls = []
     page = requests.get(category_url)
@@ -83,4 +86,4 @@ for link in result:
     book_data_df = pd.DataFrame([book_data])  # convertir en df car append ne marche pas avec les dictionnaires
     df = pd.concat([df, book_data_df], ignore_index=True)
 
-df.to_csv(r'D:\All OpenClassRooms projects\P2 - Books to Scrape\P2---Books-to-Scrape\phase 2\scrape_phase_2.csv', index=False)
+df.to_csv(chemin_dossier, index=False)
