@@ -110,3 +110,4 @@ for category_url in links_cat_urls: # pour chaque url de catégorie dans la list
     category_name = category_url.split('/')[-2] # pour rajouter le nom de la catégorie dans le nom du fichier .csv
     df.to_csv(os.path.join(chemin_dossier, f"scrape_phase_3_{category_name}.csv"), index=False) # écrit les fichiers .csv dans le dossier qu'on a saisie au début
     df = pd.DataFrame(columns=titres) # quand la df est écrit dans le fichier .csv cela vide la df de nouveau pour la prochaine catégorie
+    # push après la suppression sur github

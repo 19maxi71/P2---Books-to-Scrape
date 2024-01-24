@@ -120,3 +120,4 @@ for category_url in links_cat_urls: # pour chaque url de catégorie dans la list
     df.to_csv(os.path.join(chemin_dossier, f"scrape_phase_4_{category_name}.csv"), index=False) # écrit les fichiers .csv dans le dossier qu'on a saisie au début
     
     df = pd.DataFrame(columns=titres) # quand la df est écrit dans le fichier .csv cela vide la df de nouveau pour la prochaine catégorieD:\All OpenClassRooms projects\P2 - Books to Scrape\P2---Books-to-Scrape\phase 4
+    # push après la suppression sur github
