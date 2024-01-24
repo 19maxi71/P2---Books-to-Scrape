@@ -23,6 +23,7 @@ Installez les modules complémentaire utilisés dans ce projet en utilisant pip.
 pip3 install beautifulsoup4
 pip3 install pandas
 pip install requests
+... voir le fichiers requirement.txt pour plus d'information sur les modules utilisés.
 
 Après l'installation des modules changez le dossier pour le script choisi et écrivez:
 
@@ -32,7 +33,7 @@ Après l'installation des modules changez le dossier pour le script choisi et é
 
 ```
 
-Appuyez sur 'ENTREE' et le script va s'executer.
+Appuyez sur 'ENTREE' et le script va s'executer et vous demander où vous voulez enregistrer le résultat.
 ## Authors
 
 - Maksym YAKYMYSHYN (https://github.com/19maxi71)

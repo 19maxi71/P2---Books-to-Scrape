@@ -1,3 +1,7 @@
+# Ignore zip and rar archives
+*.zip
+*.rar
+
 # Ignore JPEG images
 *.jpeg
 *.jpg
