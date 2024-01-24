@@ -1,7 +1,7 @@
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 import requests
-import csv
+import os
 from urllib.parse import urljoin
 import pandas as pd
 import requests
@@ -26,7 +26,10 @@ import pandas as pd
 # capable de parcourir automatiquement les multiples pages si présentes
 
 
-chemin_dossier = input("Entrez le chemin du dossier où vous voulez enregistrer le fichier .csv") # demande à l'utilisateur le chemin du dossier où il veut enregistrer les fichiers .csv et les images
+# On choisit la catégorie "Mystery" pour tester le code
+
+demande_chemin_dossier = input("Entrez le chemin du dossier où vous voulez enregistrer le fichier .csv") # demande à l'utilisateur le chemin du dossier où il veut enregistrer les fichiers .csv et les images
+chemin_dossier = os.path.join(demande_chemin_dossier, "mystery_3.csv") # crée le chemin du fichier .csv
 
 def scrape_category_links(category_url):
     all_links_book_urls = []
